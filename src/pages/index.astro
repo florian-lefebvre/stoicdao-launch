@@ -85,7 +85,7 @@ const ogImage = "https://stoicdao.io/og.png"
       class="absolute z-10 inset-0 bg-gray-900/75 flex justify-center items-center p-4"
     >
       <div
-        class="bg-gray-800 w-full max-w-md p-6 rounded-xl border-2 shadow-xl border-gray-700"
+        class="bg-gray-800 w-full max-w-md p-6 rounded-xl border-2 shadow-xl border-gray-700 grid grid-cols-1 gap-4"
       >
         <div class="flex items-center justify-between">
           <Image
@@ -101,7 +101,7 @@ const ogImage = "https://stoicdao.io/og.png"
         </div>
         <div
           id="timer"
-          class="tabular-nums px-6 py-3 text-3xl sm:text-5xl bg-gray-900 text-center rounded my-6"
+          class="tabular-nums px-6 py-3 text-3xl sm:text-5xl bg-gray-900 text-center rounded"
         >
           00:00:00
         </div>
@@ -112,6 +112,36 @@ const ogImage = "https://stoicdao.io/og.png"
             aria-disabled="true"
           >
             Connect wallet
+          </button>
+          <svg x="0" y="0" class="absolute inset-0 h-full w-full text-gray-950">
+            <defs>
+              <pattern
+                id="diagonalHatch"
+                patternUnits="userSpaceOnUse"
+                width="4"
+                height="8"
+                patternTransform="rotate(-45 2 2)"
+              >
+                <path d="M -1,2 l 6,0" stroke="currentColor" stroke-width=".5"
+                ></path>
+              </pattern>
+            </defs>
+            <rect
+              x="1"
+              y="1"
+              width="100%"
+              height="100%"
+              stroke-width="0"
+              fill="url(#diagonalHatch)"></rect>
+          </svg>
+        </div>
+        <div class="relative">
+          <button
+            class="bg-gray-600 rounded-md w-full px-6 py-3 text-lg font-medium text-gray-400 transition-opacity select-none cursor-not-allowed opacity-50"
+            disabled
+            aria-disabled="true"
+          >
+            Check Whitelist
           </button>
           <svg x="0" y="0" class="absolute inset-0 h-full w-full text-gray-950">
             <defs>
