@@ -39,15 +39,16 @@ export default {
         sans: ["'Exo 2 Variable'", ...defaultTheme.fontFamily.sans],
       },
       animation: {
-        "loop-left": "loop-left var(--duration, 10s) linear infinite",
-        "loop-right": "loop-right var(--duration, 10s) linear infinite",
+        marquee: "marquee 50s linear infinite",
       },
       keyframes: {
-        "loop-left": {
-          to: { transform: "translateX(-50%)" },
-        },
-        "loop-right": {
-          from: { transform: "translateX(-50%)" },
+        marquee: {
+          from: {
+            transform: "translateX(0)",
+          },
+          to: {
+            transform: "translateX(calc(-100% - var(--gap)))",
+          },
         },
       },
     },

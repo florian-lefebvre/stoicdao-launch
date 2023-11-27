@@ -7,16 +7,22 @@ interface Props {
 const { class: className, direction = "left" } = Astro.props;
 ---
 
-<div class:list={["relative flex max-w-full overflow-hidden", className]}>
+<div
+  class:list={[
+    "pointer-events-none relative flex gap-[--gap] [--gap:theme(spacing.2)] overflow-hidden",
+    direction === "right" && "[--animation-direction:reverse]",
+    className,
+  ]}
+>
   <div
-    class:list={[
-      "flex w-max items-stretch [animation-delay:--animation-delay] [animation-play-state:--animation-play-state]",
-      direction === "left" ? "animate-loop-left" : "animate-loop-right",
-    ]}
+    class="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-[--gap] [animation-direction:--animation-direction]"
   >
     <slot />
-    <slot />
-    <slot />
+  </div>
+  <div
+    aria-hidden="true"
+    class="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-[--gap] [animation-direction:--animation-direction]"
+  >
     <slot />
   </div>
 </div>
