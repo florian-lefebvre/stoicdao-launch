@@ -1,0 +1,22 @@
+---
+interface Props {
+  class?: string;
+  direction?: "left" | "right";
+}
+
+const { class: className, direction = "left" } = Astro.props;
+---
+
+<div class:list={["relative flex max-w-full overflow-hidden", className]}>
+  <div
+    class:list={[
+      "flex w-max items-stretch [animation-delay:--animation-delay] [animation-play-state:--animation-play-state]",
+      direction === "left" ? "animate-loop-left" : "animate-loop-right",
+    ]}
+  >
+    <slot />
+    <slot />
+    <slot />
+    <slot />
+  </div>
+</div>

@@ -1,16 +1,174 @@
 ---
+import "@fontsource-variable/exo-2";
+import exoFile from "@fontsource-variable/exo-2/files/exo-2-latin-wght-normal.woff2?url";
+import "~/styles/main.css";
+import Marquee from "~/components/Marquee.astro";
+import { Image } from "astro:assets";
+import logo from "~/assets/logo.svg";
 
+function splitArrayIntoChunks<T>(array: T[], numberOfChunks: number) {
+  const chunkSize = Math.floor(array.length / numberOfChunks);
+  const remainder = array.length % numberOfChunks;
+
+  let startIndex = 0;
+  const chunks = [];
+
+  for (let i = 0; i < numberOfChunks; i++) {
+    const chunkLength = chunkSize + (i < remainder ? 1 : 0);
+    const chunk = array.slice(startIndex, startIndex + chunkLength);
+    chunks.push(chunk);
+    startIndex += chunkLength;
+  }
+
+  return chunks;
+}
+
+const images = (
+  await Astro.glob<{ default: ImageMetadata }>("../assets/images/*.jpg")
+).map((e) => e.default);
+
+const chunks = splitArrayIntoChunks(images, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Launch</title>
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href={exoFile}
+      type="font/woff2"
+    />
+  </head>
+  <body class="bg-gray-900 text-gray-300 h-full max-h-full relative">
+    <main class="flex flex-col gap-2 p-2 h-full">
+      {
+        chunks.map((chunk, i) => (
+          <Marquee
+            direction={i % 2 === 0 ? "left" : "right"}
+            class="flex-1 [--animation-delay:-2s] [--duration:50s]"
+          >
+            {chunk.map((src) => (
+              <Image
+                {src}
+                alt=""
+                class="h-full w-auto aspect-square mr-2"
+                loading="eager"
+                width={250}
+              />
+            ))}
+          </Marquee>
+        ))
+      }
+    </main>
+    <div
+      class="absolute z-10 inset-0 bg-gray-900/75 flex justify-center items-center p-4"
+    >
+      <div
+        class="bg-gray-800 w-full max-w-md p-6 rounded-xl border-2 shadow-xl border-gray-700"
+      >
+        <div class="flex items-center justify-between">
+          <Image src={logo} alt="" class="h-8 w-auto" loading="eager" width={150} />
+          <h1 class="text-gray-50 text-xl sm:text-3xl font-bold text-center">StoicDAO</h1>
+        </div>
+        <div
+          id="timer"
+          class="tabular-nums px-6 py-3 text-3xl sm:text-5xl bg-gray-900 text-center rounded my-6"
+        >
+          00:00:00
+        </div>
+        <div class="relative">
+          <button
+            class="bg-gray-600 rounded-md w-full px-6 py-3 text-lg font-medium text-gray-400 transition-opacity select-none cursor-not-allowed opacity-50"
+            disabled
+            aria-disabled="true"
+          >
+            Connect wallet
+          </button>
+          <svg x="0" y="0" class="absolute inset-0 h-full w-full text-gray-950">
+            <defs>
+              <pattern
+                id="diagonalHatch"
+                patternUnits="userSpaceOnUse"
+                width="4"
+                height="8"
+                patternTransform="rotate(-45 2 2)"
+              >
+                <path d="M -1,2 l 6,0" stroke="currentColor" stroke-width=".5"
+                ></path>
+              </pattern>
+            </defs>
+            <rect
+              x="1"
+              y="1"
+              width="100%"
+              height="100%"
+              stroke-width="0"
+              fill="url(#diagonalHatch)"></rect>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <script is:inline>
+      const input = {
+        date: "2023-11-28T17:00:00",
+        timezone: "EST",
+      };
+
+      const targetDate = new Date(
+        new Date(input.date).toLocaleString("en-US", {
+          timeZone: input.timezone,
+        })
+      ).getTime();
+
+      const timerElement = document.getElementById("timer");
+
+      const stop = () => {
+        timerElement.innerHTML = "00:00:00";
+        timerElement.classList.add("animate-pulse");
+      };
+
+      function formatTime(time) {
+        return time < 10 ? `0${time}` : time;
+      }
+
+      const setTime = () => {
+        const currentDate = new Date().getTime();
+        const timeRemaining = targetDate - currentDate;
+
+        if (timeRemaining < 0) {
+          stop();
+          return timeRemaining;
+        }
+
+        const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        timerElement.innerHTML = `${formatTime(hours)}:${formatTime(
+          minutes
+        )}:${formatTime(seconds)}`;
+
+        return timeRemaining;
+      };
+
+      setTime();
+
+      const countdown = setInterval(function () {
+        const timeRemaining = setTime();
+
+        if (timeRemaining < 0) {
+          clearInterval(countdown);
+          stop();
+        }
+      }, 1000);
+    </script>
+  </body>
 </html>
