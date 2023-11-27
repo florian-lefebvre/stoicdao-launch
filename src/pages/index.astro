@@ -81,23 +81,23 @@ const ogImage = "https://stoicdao.io/og.png"
         ))
       }
     </main>
+    <h1 class="sr-only">
+      {title}
+    </h1>
     <div
       class="absolute z-10 inset-0 bg-gray-900/75 flex justify-center items-center p-4"
     >
       <div
         class="bg-gray-800 w-full max-w-md p-6 rounded-xl border-2 shadow-xl border-gray-700 grid grid-cols-1 gap-4"
       >
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-center">
           <Image
             src={logo}
             alt=""
-            class="h-8 w-auto"
+            class="h-812w-auto"
             loading="eager"
             width={150}
           />
-          <h1 class="text-gray-50 text-xl sm:text-3xl font-bold text-center">
-            StoicDAO
-          </h1>
         </div>
         <div
           id="timer"
