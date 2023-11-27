@@ -28,15 +28,30 @@ const images = (
 ).map((e) => e.default);
 
 const chunks = splitArrayIntoChunks(images, 3);
+
+const title = "Launch | StoicDAO"
+const description = "StoicDAO is launching soon, stay tuned!"
+const { href } = Astro.url;
+
+const ogImage = "https://stoicdao.io/og.png"
 ---
 
-<html lang="en" class="h-full">
+<html lang="en" dir="ltr" class="h-full">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Launch</title>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={href} />
     <link
       rel="preload"
       as="font"
